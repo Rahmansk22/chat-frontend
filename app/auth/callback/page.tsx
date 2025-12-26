@@ -1,6 +1,5 @@
 "use client";
-
-import { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 function AuthCallbackContent() {
