@@ -33,7 +33,7 @@ export default function ProfileSetupPage() {
     setError("");
     try {
       console.log("[ProfileSetup] Clerk token before fetch:", token);
-      const backendUrl = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
+      const backendUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
       const res = await fetch(`${backendUrl.replace(/\/$/, "")}/api/auth/profile`, {
         method: "POST",
         headers: {
