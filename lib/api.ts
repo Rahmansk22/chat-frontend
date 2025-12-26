@@ -1,5 +1,5 @@
 export async function sendMessage(prompt: string) {
-  const url = "/api/chat";
+  const url = `${API_BASE_URL}/chat`;
 
   // Ensure `fetch` is available in the current runtime. If not, surface a
   // clear error so it's obvious this must run in a browser or Node 18+.
@@ -31,7 +31,7 @@ export async function sendMessage(prompt: string) {
 
 // Create a new chat for the logged-in user (JWT required)
 export async function createChat(token: string) {
-  const url = "/api/chats";
+  const url = `${API_BASE_URL}/chats`;
   const res = await fetch(url, {
     method: "POST",
     headers: { "Authorization": `Bearer ${token}` },
@@ -43,7 +43,7 @@ export async function createChat(token: string) {
 
 // Get all chats for the logged-in user (JWT required)
 export async function getChats(token: string) {
-  const url = "/api/chats";
+  const url = `${API_BASE_URL}/chats`;
   const res = await fetch(url, {
     headers: { "Authorization": `Bearer ${token}` },
   });
@@ -53,7 +53,7 @@ export async function getChats(token: string) {
 
 // Get all messages for a chat
 export async function getMessages(chatId: string, token: string) {
-  const url = `/api/chats/${chatId}/messages`;
+  const url = `${API_BASE_URL}/chats/${chatId}/messages`;
   const res = await fetch(url, {
     headers: { "Authorization": `Bearer ${token}` },
   });
@@ -67,7 +67,7 @@ export async function sendMessageToChat(
   token: string,
   content: string
 ) {
-  const url = `/api/chats/${chatId}/messages`;
+  const url = `${API_BASE_URL}/chats/${chatId}/messages`;
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -84,8 +84,10 @@ export async function sendMessageToChat(
 }
 
 // Get current user profile
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+
 export async function getProfile(token: string) {
-  const url = "/api/auth/profile";
+  const url = `${API_BASE_URL}/auth/profile`;
   const res = await fetch(url, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -95,7 +97,7 @@ export async function getProfile(token: string) {
 
 // Delete all chats for the user (requires auth token)
 export async function deleteAllChats(token: string) {
-  const url = "/api/chats";
+  const url = `${API_BASE_URL}/chats`;
   const res = await fetch(url, {
     method: "DELETE",
     headers: { "Authorization": `Bearer ${token}` },
