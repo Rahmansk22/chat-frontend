@@ -20,7 +20,9 @@ export default function ChatPage() {
     async function fetchChats() {
       setError(null);
       const t = await getToken();
+      console.log("[ChatPage] Clerk token before fetch:", t);
       if (!t) {
+        setError("Authentication failed: No Clerk JWT token found. Please sign in again.");
         router.push("/sign-in");
         return;
       }

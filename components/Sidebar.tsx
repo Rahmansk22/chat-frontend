@@ -31,7 +31,13 @@ export default function Sidebar({
   useEffect(() => {
     async function fetchData() {
       const token = await getToken();
-      if (!token) return;
+      console.log("[Sidebar] Clerk token before fetch:", token);
+      if (!token) {
+        setUser(null);
+        setChatList([]);
+        console.error("[Sidebar] No Clerk JWT token found. User is not authenticated.");
+        return;
+      }
       try {
         const [chats, profile] = await Promise.all([
           getChats(token),
@@ -39,9 +45,10 @@ export default function Sidebar({
         ]);
         setChatList(chats);
         setUser(profile);
-      } catch {
+      } catch (err) {
         setChatList([]);
         setUser(null);
+        console.error("[Sidebar] Failed to fetch chats/profile:", err);
       }
     }
     fetchData();

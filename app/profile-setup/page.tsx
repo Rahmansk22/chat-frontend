@@ -14,7 +14,9 @@ export default function ProfileSetupPage() {
 
     useEffect(() => {
       getToken().then(t => {
+        console.log("[ProfileSetupPage] Clerk token before fetch:", t);
         if (!t) {
+          setError("Authentication failed: No Clerk JWT token found. Please sign in again.");
           router.push("/sign-in");
           setLoading(true);
           return;
