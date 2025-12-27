@@ -235,7 +235,7 @@ export default function PromptBox({ onSend }: { onSend: (msg: string) => void })
       )}
 
       <div className="p-3 sm:p-4 lg:p-6 pb-1 sm:pb-4 lg:pb-6 border-t border-white/10">
-        <div className="flex flex-wrap gap-2 sm:gap-3 lg:gap-4 bg-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-4 items-center relative w-full">
+        <div className="flex gap-2 sm:gap-3 lg:gap-4 bg-white/10 rounded-xl sm:rounded-2xl p-2 sm:p-3 items-end relative w-full">
           {/* Always show + icon for actions, all screen sizes */}
           <div className="relative">
             <button
@@ -280,18 +280,16 @@ export default function PromptBox({ onSend }: { onSend: (msg: string) => void })
           />
           {/* Auto-growing textarea for prompt input */}
           <textarea
-            className="flex-1 min-w-0 resize-none bg-transparent outline-none placeholder-white/40 text-sm sm:text-base border border-white/20 rounded-xl px-3 py-2 focus:border-indigo-400 transition leading-relaxed"
+            className="flex-1 min-w-0 resize-none bg-transparent outline-none placeholder-white/40 text-sm sm:text-base border border-white/20 rounded-xl px-3 py-2 focus:border-indigo-400 transition leading-relaxed max-h-40 overflow-y-auto"
             placeholder="Ask anything..."
             value={value}
             rows={1}
-            style={{ minHeight: 44, maxHeight: 160, overflowY: 'auto' }}
-            onChange={e => {
-              setValue(e.target.value);
-              // Auto-grow
-              const ta = e.target as HTMLTextAreaElement;
+            onInput={e => {
+              const ta = e.currentTarget;
               ta.style.height = 'auto';
               ta.style.height = ta.scrollHeight + 'px';
             }}
+            onChange={e => setValue(e.target.value)}
             onKeyDown={e => {
               if (e.key === "Enter" && !e.shiftKey && value.trim()) {
                 e.preventDefault();
@@ -302,6 +300,7 @@ export default function PromptBox({ onSend }: { onSend: (msg: string) => void })
             autoComplete="off"
             spellCheck={false}
             inputMode="text"
+            style={{ minHeight: 36 }}
           />
           <button
             onClick={() => {

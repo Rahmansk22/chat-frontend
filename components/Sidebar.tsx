@@ -66,7 +66,7 @@ export default function Sidebar({
 
   return (
     <aside
-      className={`flex flex-col justify-between transition-all duration-300 ${collapsed ? 'w-14 min-w-0 p-0 overflow-hidden items-center bg-transparent border-none' : 'w-52 sm:w-60 lg:w-60 p-3 sm:p-4 rounded-2xl lg:rounded-3xl bg-white/5 backdrop-blur-xl border-r lg:border border-white/10'}`}
+      className={`flex flex-col justify-between transition-all duration-300 ${collapsed ? 'w-14 min-w-0 p-0 overflow-hidden items-center bg-transparent border-none' : 'w-52 sm:w-60 lg:w-60 p-3 sm:p-4 rounded-2xl lg:rounded-3xl bg-white/5 backdrop-blur-xl border-r lg:border border-white/10 pb-6'}`}
       style={{ minWidth: collapsed ? 0 : undefined, height: '100%' }}
     >
       {/* Hamburger Sidebar Toggle Button (right side when expanded, centered when collapsed) */}
