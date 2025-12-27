@@ -11,20 +11,39 @@ export default function ProfileSetupPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const router = useRouter();
+  const [profileChecked, setProfileChecked] = useState(false);
 
-    useEffect(() => {
-      getToken().then(t => {
-        console.log("[ProfileSetupPage] Clerk token before fetch:", t);
-        if (!t) {
-          setError("Authentication failed: No Clerk JWT token found. Please sign in again.");
-          router.push("/sign-in");
-          setLoading(true);
-          return;
+  useEffect(() => {
+    getToken().then(async t => {
+      console.log("[ProfileSetupPage] Clerk token before fetch:", t);
+      if (!t) {
+        setError("Authentication failed: No Clerk JWT token found. Please sign in again.");
+        router.push("/sign-in");
+        setLoading(true);
+        return;
+      }
+      setToken(t);
+      // Check if profile exists
+      try {
+        const res = await fetch("/api/auth/profile", {
+          method: "GET",
+          headers: { Authorization: `Bearer ${t}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.name) {
+            // Profile exists, redirect to chat
+            router.push("/chat");
+            return;
+          }
         }
-        setToken(t);
-        setLoading(false);
-      });
-    }, [getToken, router]);
+      } catch (e) {
+        // Ignore fetch errors, allow setup
+      }
+      setProfileChecked(true);
+      setLoading(false);
+    });
+  }, [getToken, router]);
 
   async function handleSubmit(name: string) {
     if (!token) {
@@ -58,9 +77,9 @@ export default function ProfileSetupPage() {
     }
   }
 
-    if (loading || !token) {
-      // If not authenticated, we are redirecting, so render nothing
-      return null;
-    }
+  if (loading || !token || !profileChecked) {
+    // If not authenticated or still checking profile, render nothing
+    return null;
+  }
   return <ProfileSetupForm onSubmit={handleSubmit} loading={loading} />;
 }
