@@ -280,7 +280,7 @@ export default function PromptBox({ onSend }: { onSend: (msg: string) => void })
           />
           {/* Auto-growing textarea for prompt input */}
           <textarea
-            className="flex-1 min-w-0 resize-none bg-transparent outline-none placeholder-white/40 text-sm sm:text-base border border-white/20 rounded-xl px-3 py-2 focus:border-indigo-400 transition leading-relaxed max-h-40 overflow-y-auto"
+            className="flex-1 min-w-0 resize-none bg-transparent outline-none placeholder-white/40 text-sm sm:text-base border border-white/20 rounded-xl px-3 py-2 focus:border-indigo-400 transition leading-relaxed max-h-40 overflow-y-auto hide-scrollbar"
             placeholder="Ask anything..."
             value={value}
             rows={1}
