@@ -197,7 +197,7 @@ export default function ChatWindow({
         </div>
       ) : (
         <div
-          className="flex-1 p-3 sm:p-4 lg:p-6 pt-14 sm:pt-0 overflow-y-auto space-y-4 sm:space-y-6 hide-scrollbar pb-6 relative bg-black"
+          className="flex-1 p-3 sm:p-4 lg:p-6 pt-14 sm:pt-0 overflow-y-auto space-y-4 sm:space-y-6 pb-6 relative bg-black"
           ref={scrollContainerRef}
         >
           {/* On mobile, show greeting below the title/SVG. On desktop, keep at the top. */}

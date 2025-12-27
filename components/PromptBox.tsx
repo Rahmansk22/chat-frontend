@@ -234,7 +234,7 @@ export default function PromptBox({ onSend }: { onSend: (msg: string) => void })
         </div>
       )}
 
-      <div className="p-3 sm:p-4 lg:p-6 pb-1 sm:pb-4 lg:pb-6 border-t border-white/10">
+      <div className="p-3 sm:p-4 lg:p-6 mb-2">
         <div className="flex gap-2 sm:gap-3 lg:gap-4 bg-white/10 rounded-xl sm:rounded-2xl p-2 sm:p-3 items-end relative w-full">
           {/* Always show + icon for actions, all screen sizes */}
           <div className="relative">

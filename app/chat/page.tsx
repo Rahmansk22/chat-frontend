@@ -131,35 +131,68 @@ export default function ChatPage() {
             onClick={() => setSidebarOpen(false)}
           />
         )}
-        {/* Sidebar */}
-        <div
-          className={`z-50 transition-transform duration-300 h-full flex flex-col ${
-            sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } fixed lg:relative inset-y-0 left-0 lg:translate-x-0 lg:p-3 lg:py-6 lg:pl-6`}
-          style={{
-            width: sidebarOpen
-              ? windowWidth !== null && windowWidth >= 1024
-                ? 240
-                : 210 // wider on mobile
-              : 0,
-            minWidth: 0,
-            maxHeight: 'calc(100vh - 72px)', // 72px = PromptBox height (approx)
-            height: 'calc(100vh - 72px)',
-          }}
-        >
-          <Sidebar
-            chats={chats}
-            onNewChat={handleNewChat}
-            onSelectChat={(id) => {
-              handleSelectChat(id);
-              if (windowWidth !== null && windowWidth < 1024) setSidebarOpen(false);
+        {/* Sidebar and main chat area in a flex row, with shared bottom border for alignment */}
+        <div className="flex flex-row w-full h-full">
+          <div
+            className={`z-50 transition-transform duration-300 h-full flex flex-col ${
+              sidebarOpen ? "translate-x-0" : "-translate-x-full"
+            } fixed lg:relative inset-y-0 left-0 lg:translate-x-0 lg:p-3 lg:py-6 lg:pl-6 border-b border-white/10`}
+            style={{
+              width: sidebarOpen
+                ? windowWidth !== null && windowWidth >= 1024
+                  ? 240
+                  : 210 // wider on mobile
+                : 0,
+              minWidth: 0,
+              maxHeight: 'calc(100vh - 72px)',
+              height: 'calc(100vh - 72px)',
             }}
-            onRenameChat={handleRenameChat}
-            onDeleteChat={handleDeleteChat}
-            activeChatId={activeChatId}
-            collapsed={!sidebarOpen}
-            onToggleSidebar={() => setSidebarOpen((open) => !open)}
-          />
+          >
+            <Sidebar
+              chats={chats}
+              onNewChat={handleNewChat}
+              onSelectChat={(id) => {
+                handleSelectChat(id);
+                if (windowWidth !== null && windowWidth < 1024) setSidebarOpen(false);
+              }}
+              onRenameChat={handleRenameChat}
+              onDeleteChat={handleDeleteChat}
+              activeChatId={activeChatId}
+              collapsed={!sidebarOpen}
+              onToggleSidebar={() => setSidebarOpen((open) => !open)}
+            />
+          </div>
+          <div className="flex-1 flex flex-col overflow-hidden border-b border-white/10">
+            {/* Dragon title overlay, does not disturb layout */}
+            <div
+              className="pointer-events-none select-none fixed left-0 right-0 z-30 flex justify-center"
+              style={{ top: '1.25rem', height: 0 }}
+            >
+              <span
+                className="text-3xl sm:text-4xl font-extrabold text-white tracking-wide bg-black/80 px-6 py-2 rounded-2xl shadow-xl flex items-center justify-center border border-white/10 drop-shadow-lg"
+                style={{ minHeight: '2.75rem', letterSpacing: '0.08em' }}
+              >
+                Dragon <span className="ml-2 font-light text-white/70">AI</span>
+              </span>
+            </div>
+            <div className="flex-1 overflow-hidden p-3 lg:p-6">
+              {error ? (
+                <div className="flex items-center justify-center h-full">
+                  <div className="bg-red-900/80 text-red-200 p-6 rounded-xl text-center max-w-md mx-auto shadow-lg">
+                    <div className="text-lg font-bold mb-2">{error}</div>
+                    <div className="text-sm">If this keeps happening, please try logging out and back in, or contact support.</div>
+                  </div>
+                </div>
+              ) : (
+                <ChatWindow
+                  chatId={activeChatId}
+                  userId={null}
+                  token={token}
+                  onFirstPrompt={activeChatId ? handleFirstPrompt : handleNewChat}
+                />
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Main Chat Area with Dragon title at the top */}
@@ -176,7 +209,7 @@ export default function ChatPage() {
               Dragon <span className="ml-2 font-light text-white/70">AI</span>
             </span>
           </div>
-          <div className="flex-1 overflow-hidden p-3 lg:p-6 pb-6">
+          <div className="flex-1 overflow-hidden p-3 lg:p-6">
             {error ? (
               <div className="flex items-center justify-center h-full">
                 <div className="bg-red-900/80 text-red-200 p-6 rounded-xl text-center max-w-md mx-auto shadow-lg">
