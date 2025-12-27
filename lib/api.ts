@@ -85,7 +85,7 @@ export async function sendMessageToChat(
 
 // Get current user profile
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
 
 export async function getProfile(token: string) {
   const url = `${API_BASE_URL}/api/auth/profile`;

@@ -4,6 +4,7 @@ import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import ProfileSetupForm from "../../components/ProfileSetupForm";
 import { getProfile } from "../../lib/api";
+import { API_BASE_URL } from "../../lib/api";
 
 export default function ProfileSetupPage() {
   const { getToken } = useAuth();
@@ -25,7 +26,7 @@ export default function ProfileSetupPage() {
       setToken(t);
       // Check if profile exists
       try {
-        const res = await fetch("/api/auth/profile", {
+        const res = await fetch(`${API_BASE_URL}/api/auth/profile`, {
           method: "GET",
           headers: { Authorization: `Bearer ${t}` },
         });
@@ -53,7 +54,7 @@ export default function ProfileSetupPage() {
     setLoading(true);
     setError("");
     try {
-      const endpoint = `/api/auth/profile`;
+      const endpoint = `${API_BASE_URL}/api/auth/profile`;
       console.log("[ProfileSetup] Endpoint:", endpoint);
       console.log("[ProfileSetup] Clerk token before fetch:", token);
       const res = await fetch(endpoint, {
