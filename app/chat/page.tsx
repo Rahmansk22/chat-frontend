@@ -68,17 +68,11 @@ export default function ChatPage() {
 
   async function handleFirstPrompt(prompt: string) {
     if (!activeChatId || !token) return;
-    await fetch(`/api/chats/${activeChatId}/title`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      },
-      body: JSON.stringify({ title: prompt }),
-    });
-    setChats((prev) =>
-      prev.map((c) => (c.id === activeChatId ? { ...c, title: prompt } : c))
-    );
+    // Wait a moment for backend to update title, then refresh chat list
+    setTimeout(async () => {
+      const updatedChats = await getChats(token);
+      setChats(updatedChats);
+    }, 300);
   }
 
   function handleSelectChat(id: string) {
@@ -139,10 +133,19 @@ export default function ChatPage() {
         )}
         {/* Sidebar */}
         <div
-          className={`z-50 transition-transform duration-300 h-full ${
+          className={`z-50 transition-transform duration-300 h-full flex flex-col ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           } fixed lg:relative inset-y-0 left-0 lg:translate-x-0 lg:p-3 lg:py-6 lg:pl-6`}
-          style={{ width: sidebarOpen ? (windowWidth !== null && windowWidth >= 1024 ? 240 : 180) : 0, minWidth: 0 }}
+          style={{
+            width: sidebarOpen
+              ? windowWidth !== null && windowWidth >= 1024
+                ? 240
+                : 210 // wider on mobile
+              : 0,
+            minWidth: 0,
+            maxHeight: 'calc(100vh - 72px)', // 72px = PromptBox height (approx)
+            height: 'calc(100vh - 72px)',
+          }}
         >
           <Sidebar
             chats={chats}
