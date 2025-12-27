@@ -66,7 +66,7 @@ export default function Sidebar({
 
   return (
     <aside
-      className={`flex flex-col transition-all duration-300 ${collapsed ? 'w-14 min-w-0 p-0 overflow-hidden items-center bg-transparent border-none' : 'w-52 sm:w-60 lg:w-60 p-3 sm:p-4 rounded-2xl lg:rounded-3xl bg-white/5 backdrop-blur-xl border-r lg:border border-white/10'}`}
+      className={`flex flex-col justify-between transition-all duration-300 ${collapsed ? 'w-14 min-w-0 p-0 overflow-hidden items-center bg-transparent border-none' : 'w-52 sm:w-60 lg:w-60 p-3 sm:p-4 rounded-2xl lg:rounded-3xl bg-white/5 backdrop-blur-xl border-r lg:border border-white/10'}`}
       style={{ minWidth: collapsed ? 0 : undefined, height: '100%' }}
     >
       {/* Hamburger Sidebar Toggle Button (right side when expanded, centered when collapsed) */}
@@ -96,63 +96,65 @@ export default function Sidebar({
       )}
       {!collapsed && (
         <>
-          <h2 className="text-lg font-semibold mb-4 sm:mb-6">Chats</h2>
-          <button
-            className="mb-3 sm:mb-4 rounded-xl bg-white/10 hover:bg-white/15 active:bg-white/20 transition p-2.5 sm:p-3 text-left text-sm sm:text-base"
-            onClick={onNewChat}
-          >
-            + New Chat
-          </button>
-          <div className="flex-1 space-y-1.5 sm:space-y-2 overflow-y-auto text-xs sm:text-sm text-white/60 hide-scrollbar">
-            {chats.length === 0 ? (
-              <div className="text-center py-4">No saved chats</div>
-            ) : (
-              chats.map((chat) => (
-                <div
-                  key={chat.id}
-                  className={`flex items-center justify-between rounded-lg p-2 transition ${
-                    activeChatId === chat.id ? "bg-indigo-600 text-white" : "hover:bg-white/10 active:bg-white/20"
-                  }`}
-                >
-                  <button className="flex-1 text-left truncate pr-2" onClick={() => onSelectChat(chat.id)}>
-                    {chat.title || `Chat ${chat.id}`}
-                  </button>
-                  <div className="flex gap-1.5 sm:gap-2 ml-2">
-                    <button
-                      className="text-xs px-1.5 sm:px-2 py-1 rounded bg-white/20 hover:bg-white/30 active:bg-white/40 transition"
-                      aria-label="Rename chat"
-                      title="Rename"
-                      onClick={() => {
-                        const t = window.prompt("Rename chat", chat.title || "");
-                        if (t && t.trim()) onRenameChat(chat.id, t.trim());
-                      }}
-                    >
-                      <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
-                        <path d="M4 13.5v2.5h2.5l7-7a1.77 1.77 0 0 0-2.5-2.5l-7 7Z" />
-                      </svg>
+          <div className="flex flex-col flex-1 min-h-0">
+            <h2 className="text-lg font-semibold mb-4 sm:mb-6">Chats</h2>
+            <button
+              className="mb-3 sm:mb-4 rounded-xl bg-white/10 hover:bg-white/15 active:bg-white/20 transition p-2.5 sm:p-3 text-left text-sm sm:text-base"
+              onClick={onNewChat}
+            >
+              + New Chat
+            </button>
+            <div className="flex-1 space-y-1.5 sm:space-y-2 overflow-y-auto text-xs sm:text-sm text-white/60 hide-scrollbar min-h-0">
+              {chats.length === 0 ? (
+                <div className="text-center py-4">No saved chats</div>
+              ) : (
+                chats.map((chat) => (
+                  <div
+                    key={chat.id}
+                    className={`flex items-center justify-between rounded-lg p-2 transition ${
+                      activeChatId === chat.id ? "bg-indigo-600 text-white" : "hover:bg-white/10 active:bg-white/20"
+                    }`}
+                  >
+                    <button className="flex-1 text-left truncate pr-2" onClick={() => onSelectChat(chat.id)}>
+                      {chat.title || `Chat ${chat.id}`}
                     </button>
-                    <button
-                      className="text-xs px-1.5 sm:px-2 py-1 rounded bg-red-500/60 text-white hover:bg-red-600 active:bg-red-700 transition"
-                      aria-label="Delete chat"
-                      title="Delete"
-                      onClick={() => {
-                        setConfirmDeleteId(chat.id);
-                        setConfirmDeleteTitle(chat.title || `Chat ${chat.id}`);
-                      }}
-                    >
-                      <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                        <path d="M3 6h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2" />
-                        <rect x="5" y="6" width="14" height="14" rx="2" fill="none" stroke="currentColor" strokeWidth="2" />
-                        <path d="M10 11v6M14 11v6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      </svg>
-                    </button>
+                    <div className="flex gap-1.5 sm:gap-2 ml-2">
+                      <button
+                        className="text-xs px-1.5 sm:px-2 py-1 rounded bg-white/20 hover:bg-white/30 active:bg-white/40 transition"
+                        aria-label="Rename chat"
+                        title="Rename"
+                        onClick={() => {
+                          const t = window.prompt("Rename chat", chat.title || "");
+                          if (t && t.trim()) onRenameChat(chat.id, t.trim());
+                        }}
+                      >
+                        <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+                          <path d="M4 13.5v2.5h2.5l7-7a1.77 1.77 0 0 0-2.5-2.5l-7 7Z" />
+                        </svg>
+                      </button>
+                      <button
+                        className="text-xs px-1.5 sm:px-2 py-1 rounded bg-red-500/60 text-white hover:bg-red-600 active:bg-red-700 transition"
+                        aria-label="Delete chat"
+                        title="Delete"
+                        onClick={() => {
+                          setConfirmDeleteId(chat.id);
+                          setConfirmDeleteTitle(chat.title || `Chat ${chat.id}`);
+                        }}
+                      >
+                        <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                          <path d="M3 6h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                          <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2" />
+                          <rect x="5" y="6" width="14" height="14" rx="2" fill="none" stroke="currentColor" strokeWidth="2" />
+                          <path d="M10 11v6M14 11v6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))
-            )}
+                ))
+              )}
+            </div>
           </div>
-          <div className="mt-4 sm:mt-6 border-t border-white/10 pt-3 sm:pt-4 flex flex-col gap-2">
+          <div className="border-t border-white/10 pt-3 sm:pt-4 flex flex-col gap-2">
             {user && <div className="text-white/80 font-medium text-sm sm:text-base truncate">👤 {user.name}</div>}
             <button
               className="rounded-xl bg-red-500/80 hover:bg-red-600 active:bg-red-700 transition p-2 sm:p-2.5 text-white text-xs sm:text-sm"
