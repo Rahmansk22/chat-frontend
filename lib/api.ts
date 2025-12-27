@@ -89,6 +89,8 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
 
 export async function getProfile(token: string) {
   const url = `${API_BASE_URL}/api/auth/profile`;
+  console.log("[getProfile] Endpoint:", url);
+  console.log("[getProfile] Token:", token);
   const res = await fetch(url, {
     method: "GET",
     headers: {
@@ -97,7 +99,11 @@ export async function getProfile(token: string) {
     },
     credentials: "include",
   });
-  if (!res.ok) throw new Error("Failed to fetch profile");
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    console.error(`[getProfile] Failed: ${res.status} ${text}`);
+    throw new Error("Failed to fetch profile");
+  }
   return res.json();
 }
 

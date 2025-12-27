@@ -34,9 +34,10 @@ export default function ProfileSetupPage() {
     setLoading(true);
     setError("");
     try {
+      const endpoint = `/api/auth/profile`;
+      console.log("[ProfileSetup] Endpoint:", endpoint);
       console.log("[ProfileSetup] Clerk token before fetch:", token);
-      // Always use /api/auth/profile as endpoint
-      const res = await fetch(`/api/auth/profile`, {
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
