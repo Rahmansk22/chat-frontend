@@ -90,7 +90,12 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
 export async function getProfile(token: string) {
   const url = `${API_BASE_URL}/api/auth/profile`;
   const res = await fetch(url, {
-    headers: { Authorization: `Bearer ${token}` },
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
   });
   if (!res.ok) throw new Error("Failed to fetch profile");
   return res.json();
