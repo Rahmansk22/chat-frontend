@@ -278,14 +278,23 @@ export default function PromptBox({ onSend }: { onSend: (msg: string) => void })
             onChange={handleFileSelect}
             className="hidden"
           />
-          {/* Input is static, no SSR-only logic, safe for hydration */}
-          <input
-            className="flex-1 min-w-0 bg-transparent outline-none placeholder-white/40 text-sm sm:text-base border border-white/20 rounded-xl px-3 py-2 focus:border-indigo-400 transition"
+          {/* Auto-growing textarea for prompt input */}
+          <textarea
+            className="flex-1 min-w-0 resize-none bg-transparent outline-none placeholder-white/40 text-sm sm:text-base border border-white/20 rounded-xl px-3 py-2 focus:border-indigo-400 transition leading-relaxed"
             placeholder="Ask anything..."
             value={value}
-            onChange={e => setValue(e.target.value)}
+            rows={1}
+            style={{ minHeight: 44, maxHeight: 160, overflowY: 'auto' }}
+            onChange={e => {
+              setValue(e.target.value);
+              // Auto-grow
+              const ta = e.target as HTMLTextAreaElement;
+              ta.style.height = 'auto';
+              ta.style.height = ta.scrollHeight + 'px';
+            }}
             onKeyDown={e => {
-              if (e.key === "Enter" && value.trim()) {
+              if (e.key === "Enter" && !e.shiftKey && value.trim()) {
+                e.preventDefault();
                 onSend(value);
                 setValue("");
               }
